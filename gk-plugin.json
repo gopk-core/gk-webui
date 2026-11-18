@@ -9,12 +9,19 @@
   "openSource": true,
   "license": "AGPL-3.0-only",
   "sourcePath": "src",
-  "versions": [{
-    "version": "0.1.0",
-    "minAgentVersion": "5.86.0",
-    "package": "releases/0.1.0/plugin-0.1.0.tar.gz",
-    "sha256": "a0505e0388208ae2fca309a553db98a0ad8996b4d970276fc81983f9cb27586b",
-    "changelog": "WebView 工作台、代码块捕获；真机及跨执行域桥接待验收，非聊天气泡内嵌。",
-    "permissions": ["code", "app", "ui", "storage"]
-  }]
+  "versions": [
+    {
+      "version": "0.1.0",
+      "minAgentVersion": "5.86.0",
+      "package": "releases/0.1.0/plugin-0.1.0.tar.gz",
+      "sha256": "0d577ce8946c0ef6ed3468496dad5bbfd8577a307fa177cc94640746ce3b41e2",
+      "changelog": "WebView 工作台、代码块捕获；真机及跨执行域桥接待验收，非聊天气泡内嵌。",
+      "permissions": [
+        "code",
+        "app",
+        "ui",
+        "storage"
+      ]
+    }
+  ]
 }
