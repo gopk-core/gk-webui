@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "id": "gopk.webui",
+  "name": "GK WebUI",
+  "version": "0.1.0",
+  "minAgentVersion": "5.86.0",
+  "description": "HTML/CSS/JavaScript WebView 预览工作台，捕获 AI 网页代码；聊天气泡内嵌尚未提供。",
+  "permissions": ["code", "app", "ui", "storage"],
+  "contributions": {
+    "lifecycle": {"start": "code/start.js"},
+    "views": [{"id": "webui", "title": "WebUI 工作台", "entry": "web/index.html", "target": "webui"}]
+  }
+}

@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; frame-src 'self' about:; connect-src 'none'; img-src data:"><title>GK WebUI</title><link rel="stylesheet" href="style.css"></head>
+<body><header><h1>GK WebUI</h1><p>Chromium 网页预览 · HTML / CSS / JavaScript</p></header><main>
+<div class="toolbar"><button id="load">读取捕获</button><button id="run">渲染</button><button id="stop">停止</button><button id="clear">清空</button><label><input id="scripts" type="checkbox">允许本次网页脚本</label><select id="width" aria-label="预览宽度"><option value="100%">自适应</option><option value="375px">手机 375px</option><option value="768px">平板 768px</option></select></div>
+<p id="status" role="status">粘贴 HTML 源码后点渲染。原生消息内嵌仍需宿主提供接口。</p>
+<label>HTML<textarea id="html" spellcheck="false" placeholder="粘贴 HTML 或带 html/css/js 标记的 Markdown 代码块"></textarea></label>
+<div class="columns"><label>CSS<textarea id="css" spellcheck="false"></textarea></label><label>JavaScript<textarea id="js" spellcheck="false"></textarea></label></div>
+<div id="stage"><iframe id="preview" title="网页预览" sandbox="" referrerpolicy="no-referrer"></iframe></div>
+<p class="help">网页隔离运行，无宿主桥接、联网、弹窗和顶层导航。脚本默认关闭，开启后点击渲染才执行。若网页卡住，请从宿主停用插件。</p>
+</main><script src="app.js"></script></body></html>

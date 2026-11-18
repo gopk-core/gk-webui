@@ -1,0 +1,11 @@
+{
+  "name": "gk-webui",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "scripts": {
+    "build": "tsc --target ES2020 --module none --lib ES2020,DOM --outFile code/start.js src/start.ts",
+    "test": "node tests/test.cjs && node --check web/app.js && node --check code/start.js"
+  },
+  "devDependencies": {"typescript": "5.7.3", "linkedom": "0.18.12"}
+}

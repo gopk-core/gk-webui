@@ -1,0 +1,22 @@
+const fs=require('node:fs');const vm=require('node:vm');const assert=require('node:assert/strict');const path=require('node:path');
+const root=path.resolve(__dirname,'..');
+(async()=>{
+ const handlers={};const saved={};let frame;
+ const context={console};vm.createContext(context);vm.runInContext(fs.readFileSync(root+'/code/start.js','utf8'),context);
+ await context.main({}, {fs:{write:async(p,v)=>{saved[p]=v;return true;}},on:(n,f)=>handlers[n]=f,app:{publish:async f=>{frame=f;}}});
+ assert.deepEqual(Array.from(frame.hooks),['chat.afterResponse']);assert.equal(frame.pages.root,undefined);
+ const input={text:'Hello\n```html\n<div>Hello</div>\n```\n```css\ndiv{color:red}\n```'};
+ assert.equal(await handlers['chat.afterResponse'](input),input);assert.equal(JSON.parse(saved['latest.json']).html,'<div>Hello</div>\n');
+ assert.equal(context.extractWebUI('ordinary reply'),null);assert.equal(context.extractWebUI('```html\n'+ 'x'.repeat(48001)+'\n```'),null);
+ await handlers['webui.clear']();assert.equal(saved['latest.json'],'null');
+ const bad={text:'```html\n<div>preserve me</div>\n```'};
+ const handlers2={};await context.main({}, {fs:{write:async()=>{throw Error('offline');}},on:(n,f)=>handlers2[n]=f,app:{publish:async()=>{}}});assert.equal(await handlers2['chat.afterResponse'](bad),bad);
+ const {DOMParser,parseHTML}=require('linkedom');
+ const {document}=parseHTML(fs.readFileSync(root+'/web/index.html','utf8'));
+ const browser={document,DOMParser,console};vm.createContext(browser);vm.runInContext(fs.readFileSync(root+'/web/app.js','utf8'),browser);
+ const rendered=browser.buildDocument('<html><head></head><body><script>window.x=1</script><img src="https://x.test/a"><button onclick="x()">OK</button></body></html>','body{color:red}','window.y=2',false);
+ assert(!rendered.includes('<script'));assert(!rendered.includes('onclick'));assert(!rendered.includes('https://x.test'));assert(rendered.includes('Content-Security-Policy'));
+ const active=browser.buildDocument('<html><head></head><body><b>hi</b></body></html>','','window.y=2',true);assert(active.includes('<script>window.y=2</script>'));
+ assert.equal(browser.parseBlocks('```html\n<h1>hey</h1>\n```').html,'<h1>hey</h1>\n');
+ console.log('PASS: capture, original-response preservation, overflow, storage errors, clear, frame scope, HTML sanitizer, script opt-in, fenced source parsing.');
+})().catch(e=>{console.error(e);process.exitCode=1;});
